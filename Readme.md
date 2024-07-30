@@ -16,7 +16,8 @@ pip install chromadb<BR>
 pip install pysqlite3 <BR>
 pip install flask<BR>
 pip install pypdf<BR>
-<BR>
+pip install langchain-chroma<BR>
+
 ### check to make sure Ollama model is loaded on GPU<BR>
 ollama ps<BR>
 
