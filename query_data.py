@@ -42,8 +42,8 @@ def query_rag(query_text: str):
     # print(prompt)
     
     # model = Ollama(model="mistral")      # 7b
-    model = Ollama(model="mistral-nemo") # 12b
-    # model = Ollama(model="mistral-nemo", num_ctx=4096)  # 123b TOO BIG !!
+    model = Ollama(model="mistral-nemo", num_ctx=4096) # 12b
+    # model = Ollama(model="mistral-large", num_ctx=4096)  # 123b TOO BIG !!
     response_text = model.invoke(prompt)
 
     sources = [doc.metadata.get("id", None) for doc, _score in results]
