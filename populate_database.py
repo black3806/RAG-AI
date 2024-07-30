@@ -1,11 +1,12 @@
 import argparse
 import os
 import shutil
-from langchain.document_loaders.pdf import PyPDFDirectoryLoader
+from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
 from get_embedding_function import get_embedding_function
-from langchain.vectorstores.chroma import Chroma
+from langchain_community.vectorstores import Chroma
+
 
 
 CHROMA_PATH = "chroma"
@@ -45,15 +46,13 @@ def split_documents(documents: list[Document]):
 
 def add_to_chroma(chunks: list[Document]):
     # Load the existing database.
-    db = Chroma(
-        persist_directory=CHROMA_PATH, embedding_function=get_embedding_function()
-    )
-
+    vectordb = Chroma(persist_directory=CHROMA_PATH, embedding_function=get_embedding_function())
+    
     # Calculate Page IDs.
     chunks_with_ids = calculate_chunk_ids(chunks)
 
     # Add or Update the documents.
-    existing_items = db.get(include=[])  # IDs are always included by default
+    existing_items = vectordb.get(include=[])  # IDs are always included by default
     existing_ids = set(existing_items["ids"])
     print(f"Number of existing documents in DB: {len(existing_ids)}")
 
@@ -65,9 +64,19 @@ def add_to_chroma(chunks: list[Document]):
 
     if len(new_chunks):
         print(f"👉 Adding new documents: {len(new_chunks)}")
-        new_chunk_ids = [chunk.metadata["id"] for chunk in new_chunks]
-        db.add_documents(new_chunks, ids=new_chunk_ids)
-        db.persist()
+    
+        # Iterate through each chunk in new_chunks
+        for chunk in new_chunks:
+            chunk_id = chunk.metadata["id"]
+        
+            # Add document to the database
+            print(f"Adding document with ID: {chunk_id}")
+            vectordb.add_documents([chunk], ids=[chunk_id])
+        
+            # Persist the changes after each document is added
+            vectordb.persist()
+        
+            print(f"Document with ID: {chunk_id} added and persisted.")
     else:
         print("✅ No new documents to add")
 
