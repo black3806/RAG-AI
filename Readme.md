@@ -1,79 +1,84 @@
 
 
-===== nstall Ollama< br / >
-curl -fsSL https://ollama.com/install.sh | sh< br / >
-< br / >
-===== Pull models< br / >
-ollama pull nomic-embed-text  # embedding model (advanced parser)< br / >
-ollama pull mistral-nemo      # 12.2 billion parameter Large Language Model< br / >
-< br / >
-===== Install Python modules< br / >
-pip install langchain-community< br / >
-pip install ollama< br / >
-pip install chromadb< br / >
-pip install pysqlite3< br / >
-< br / >
-===== check to make sure Ollama model is loaded on GPU< br / >
-ollama ps< br / >
-< br / >
-===== Populate data< br / >
-Copy PDFs int data folder< br / >
-python3 populate_database.py (this will take a while depending on the number of files)< br / >
-< br / >
-===== test query< br / >
-python3 query.py "why is the sky blue"< br / >
-< br / >
-+===== install appserver < br / >
-sudo apt update< br / >
-sudo apt install gunicorn< br / >
-< br / >
-===== Create a service unit file for Gunicorn (point to your AI directory in path and working directory)< br / >
-< br / >
-[Unit]< br / >
-Description=MentalAI< br / >
-After=network.target< br / >
-< br / >
-[Service]< br / >
-User=black< br / >
-Group=black< br / >
-Type=simple< br / >
-Restart=always< br / >
-WorkingDirectory=/home/black/RAGAI< br / >
-Environment="PATH=/home/black/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/black/RAGAI"< br / >
-ExecStart=/usr/bin/gunicorn -b 0.0.0.0:8080 -w 1 app:app &< br / >
-< br / >
-[Install]< br / >
-WantedBy=multi-user.target< br / >
-< br / >
- ===== enable service< br / >
-sudo systemctl daemon-reload< br / >
-sudo systemctl enable RAG.service< br / >
-sudo systemctl start RAG.service< br / >
-sudo systemctl status RAG.service< br / >
-< br / > 
-===== modify Ollama service unit file to add GPU support< br / >
-< br / >
-[Unit]< br / >
-Description=Ollama Service< br / >
-After=network-online.target< br / >
-< br / >
-[Service]< br / >
-ExecStart=/usr/local/bin/ollama serve< br / >
-User=ollama< br / >
-Group=ollama< br / >
-Restart=always< br / >
-RestartSec=3< br / >
-Environment="PATH=/home/black/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"< br / >
-Environment="__NV_PRIME_RENDER_OFFLOAD=1"< br / >
-Environment="_GLX_VENDOR_LIBRARY_NAME=nvidia"< br / >
-< br / >
-[Install]< br / >
-WantedBy=default.target< br / >
- < br / >
-===== Reload Ollama Service< br / >
-sudo systemctl daemon-reload< br / >
-sudo systemctl start Rollama.service< br / >
-sudo systemctl status ollama.service< br / >
-< br / >
-===== Test< br / >
-http://localhost:8080< br / >
+## Heavily Modified version of https://github.com/pixegami/rag-tutorial-v2 <BR>
+<BR>
+### Install Ollama<BR>
+curl -fsSL https://ollama.com/install.sh | sh<BR>
+<BR>
+### Pull models<BR>
+ollama pull nomic-embed-text  ### embedding model (advanced parser)<BR>
+ollama pull mistral-nemo      ### 12.2 billion parameter Large Language Model<BR>
+<BR>
+### Install Python modules<BR>
+pip install langchain-community<BR>
+pip install ollama<BR>
+pip install chromadb<BR>
+pip install pysqlite3 <BR>
+pip install flask<BR>
+pip install pypdf<BR>
+<BR>
+### check to make sure Ollama model is loaded on GPU<BR>
+ollama ps<BR>
+
+### Populate data<BR>
+Copy PDFs int data folder<BR>
+python3 populate_database.py (this will take a while depending on the number of files)<BR>
+<BR>
+### test query<BR>
+python3 query.py "why is the sky blue"<BR>
+
+### install appserver<BR>
+sudo apt update<BR>
+sudo apt install gunicorn<BR>
+<BR>
+### Create a service unit file for Gunicorn (point to your AI directory in path and working directory)<BR>
+<BR>
+[Unit]<BR>
+Description=MentalAI<BR>
+After=network.target<BR>
+<BR>
+[Service]<BR>
+User=black<BR>
+Group=black<BR>
+Type=simple<BR>
+Restart=always<BR>
+WorkingDirectory=/home/black/RAGAI<BR>
+Environment="PATH=/home/black/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/black/RAGAI"<BR>
+ExecStart=/usr/bin/gunicorn -b 0.0.0.0:8080 -w 1 app:app &<BR>
+<BR>
+[Install]<BR>
+WantedBy=multi-user.target<BR>
+<BR>
+### enable service<BR>
+sudo systemctl daemon-reload<BR>
+sudo systemctl enable RAG.service<BR>
+sudo systemctl start RAG.service<BR>
+sudo systemctl status RAG.service<BR>
+<BR>
+### modify Ollama service unit file to add GPU support<BR>
+<BR>
+[Unit]<BR>
+Description=Ollama Service<BR>
+After=network-online.target<BR>
+<BR>
+[Service]<BR>
+ExecStart=/usr/local/bin/ollama serve<BR>
+User=ollama<BR>
+Group=ollama<BR>
+Restart=always<BR>
+RestartSec=3<BR>
+Environment="PATH=/home/black/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"<BR>
+Environment="__NV_PRIME_RENDER_OFFLOAD=1"<BR>
+Environment="_GLX_VENDOR_LIBRARY_NAME=nvidia"<BR>
+<BR>
+[Install]<BR>
+WantedBy=default.target<BR>
+ <BR>
+### Reload Ollama Service<BR>
+sudo systemctl daemon-reload<BR>
+sudo systemctl start Rollama.service<BR>
+sudo systemctl status ollama.service<BR>
+<BR>
+### Test<BR>
+http://localhost:8080<BR>
+
