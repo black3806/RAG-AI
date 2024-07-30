@@ -34,6 +34,7 @@ sudo apt install gunicorn<BR>
 <BR>
 ### Create a service unit file for Gunicorn (point to your AI directory in path and working directory)<BR>
 /etc/systemd/system/RAG.service<BR>
+<code style="color : green">
 [Unit]<BR>
 Description=RAGAI<BR>
 After=network.target<BR>
@@ -49,7 +50,7 @@ ExecStart=/usr/bin/gunicorn -b 0.0.0.0:8080 -w 1 app:app &<BR>
 <BR>
 [Install]<BR>
 WantedBy=multi-user.target<BR>
-
+</code>
 ### enable service<BR>
 sudo systemctl daemon-reload<BR>
 sudo systemctl enable RAG.service<BR>
@@ -58,6 +59,7 @@ sudo systemctl status RAG.service<BR>
 <BR>
 ### modify Ollama service unit file to add GPU support<BR>
 /etc/systemd/system/ollama.service<BR>
+<code style="color : green">
 [Unit]<BR>
 Description=Ollama Service<BR>
 After=network-online.target<BR>
@@ -71,6 +73,7 @@ RestartSec=3<BR>
 Environment="PATH=/home/black/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"<BR>
 Environment="__NV_PRIME_RENDER_OFFLOAD=1"<BR>
 Environment="_GLX_VENDOR_LIBRARY_NAME=nvidia"<BR>
+</code>
 <BR>
 [Install]<BR>
 WantedBy=default.target<BR>
