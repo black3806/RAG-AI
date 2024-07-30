@@ -1,7 +1,7 @@
 
 
 ## Heavily Modified version of https://github.com/pixegami/rag-tutorial-v2 <BR>
-<BR>
+
 ### Install Ollama<BR>
 curl -fsSL https://ollama.com/install.sh | sh<BR>
 <BR>
@@ -32,7 +32,7 @@ sudo apt update<BR>
 sudo apt install gunicorn<BR>
 <BR>
 ### Create a service unit file for Gunicorn (point to your AI directory in path and working directory)<BR>
-<BR>
+/etc/systemd/system/RAG.service<BR>
 [Unit]<BR>
 Description=MentalAI<BR>
 After=network.target<BR>
@@ -48,7 +48,7 @@ ExecStart=/usr/bin/gunicorn -b 0.0.0.0:8080 -w 1 app:app &<BR>
 <BR>
 [Install]<BR>
 WantedBy=multi-user.target<BR>
-<BR>
+
 ### enable service<BR>
 sudo systemctl daemon-reload<BR>
 sudo systemctl enable RAG.service<BR>
@@ -56,7 +56,7 @@ sudo systemctl start RAG.service<BR>
 sudo systemctl status RAG.service<BR>
 <BR>
 ### modify Ollama service unit file to add GPU support<BR>
-<BR>
+/etc/systemd/system/ollama.service<BR>
 [Unit]<BR>
 Description=Ollama Service<BR>
 After=network-online.target<BR>
@@ -73,7 +73,7 @@ Environment="_GLX_VENDOR_LIBRARY_NAME=nvidia"<BR>
 <BR>
 [Install]<BR>
 WantedBy=default.target<BR>
- <BR>
+
 ### Reload Ollama Service<BR>
 sudo systemctl daemon-reload<BR>
 sudo systemctl start Rollama.service<BR>
