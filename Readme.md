@@ -77,9 +77,9 @@ WantedBy=default.target<BR>
 
 ### Reload Ollama Service<BR>
 sudo systemctl daemon-reload<BR>
-sudo systemctl start Rollama.service<BR>
+sudo systemctl start ollama.service<BR>
 sudo systemctl status ollama.service<BR>
-<BR>
+
 ### Test<BR>
 http://localhost:8080<BR>
 
