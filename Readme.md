@@ -73,7 +73,6 @@ RestartSec=3<BR>
 Environment="PATH=/home/black/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"<BR>
 Environment="__NV_PRIME_RENDER_OFFLOAD=1"<BR>
 Environment="_GLX_VENDOR_LIBRARY_NAME=nvidia"<BR>
-
 <BR>
 [Install]<BR>
 WantedBy=default.target<BR>
