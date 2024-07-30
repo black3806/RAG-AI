@@ -34,7 +34,7 @@ sudo apt install gunicorn<BR>
 ### Create a service unit file for Gunicorn (point to your AI directory in path and working directory)<BR>
 /etc/systemd/system/RAG.service<BR>
 [Unit]<BR>
-Description=MentalAI<BR>
+Description=RAGAI<BR>
 After=network.target<BR>
 <BR>
 [Service]<BR>
